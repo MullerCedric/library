@@ -22,6 +22,8 @@ return [
     'book' => 'GET/books/zoom',
     'addBook' => 'GET/books/add',
     'addedBook' => 'POST/books/added',
+    'addVersion' => 'GET/books/addVersion',
+    'addedVersion' => 'GET/books/addedVersion',
     'editBook' => 'GET/books/edit',
     'editedBook' => 'POST/books/edited',
 
