@@ -84,4 +84,17 @@ class Books extends Model {
         }
         return null;
     }
+
+    public function findBook( $term ) {
+        try {
+            $pdoSt = $this->cn->prepare(
+                'SELECT id, title FROM library.books WHERE books.title LIKE :term OR books.tags LIKE :term '
+            );
+            $pdoSt->bindValue(':term', "%$term%");
+            $pdoSt->execute();
+            return $pdoSt->fetchAll();
+        } catch ( \PDOException $exception ) {
+            return null;
+        }
+    }
 }

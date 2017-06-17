@@ -47,6 +47,9 @@ return [
     'addSubscription' => 'GET/subscriptions/add',
     'addedSubscription' => 'POST/subscriptions/added',
 
+    /* SEARCH */
+    'find' => 'GET/search/find',
+
     /* PAGES */
     'default' => 'GET/page/index',
     'dashboard' => 'GET/page/dashboard',

@@ -54,4 +54,17 @@ class Authors extends Model {
             die( $exception );
         }
     }
+
+    public function findAuthor( $term ) {
+        try {
+            $pdoSt = $this->cn->prepare(
+                'SELECT id, alias_name FROM library.authors WHERE alias_name LIKE :term '
+            );
+            $pdoSt->bindValue(':term', '%'.$term.'%');
+            $pdoSt->execute();
+            return $pdoSt->fetchAll();
+        } catch ( \PDOException $exception ) {
+            return null;
+        }
+    }
 }

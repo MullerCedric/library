@@ -26,4 +26,17 @@ class Genres extends Model {
             $_SESSION['error'][] = 'La connexion à la BDD n\'a pu être établie. Le nouveau genre n\'a pas été ajouté';
         }
     }
+
+    public function findGenre( $term ) {
+        try {
+            $pdoSt = $this->cn->prepare(
+                'SELECT id, name FROM library.genres WHERE name LIKE :term '
+            );
+            $pdoSt->bindValue(':term', "%$term%");
+            $pdoSt->execute();
+            return $pdoSt->fetchAll();
+        } catch ( \PDOException $exception ) {
+            return null;
+        }
+    }
 }
