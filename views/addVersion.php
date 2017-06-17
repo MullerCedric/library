@@ -21,7 +21,7 @@ require 'partials/_header.php'; ?>
         <?php require 'partials/_addVersion.php'; ?>
 
         <input type="hidden" name="r" value="books">
-        <input type="hidden" name="a" value="added">
+        <input type="hidden" name="a" value="addedVersion">
         <p><input type="submit" value="Valider"></p>
     </form>
 </div>

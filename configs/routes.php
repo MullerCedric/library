@@ -23,7 +23,7 @@ return [
     'addBook' => 'GET/books/add',
     'addedBook' => 'POST/books/added',
     'addVersion' => 'GET/books/addVersion',
-    'addedVersion' => 'GET/books/addedVersion',
+    'addedVersion' => 'POST/books/addedVersion',
     'editBook' => 'GET/books/edit',
     'editedBook' => 'POST/books/edited',
 

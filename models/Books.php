@@ -5,7 +5,7 @@ class Books extends Model {
     public function getBooks() {
         try {
             $pdoSt = $this->cn->query(
-                'SELECT title FROM library.books'
+                'SELECT id, title FROM library.books'
             );
             return $pdoSt->fetchAll();
         } catch ( \PDOException $exception ) {
@@ -28,10 +28,9 @@ class Books extends Model {
                 ':series_id' => $book['series_id'],
                 ':genres_id' => $book['genres_id']
             ]);
-            $_SESSION['bookVersion']['books_id'] = $this->cn->lastInsertId();
-            $_SESSION['success'][] = 'Livre ajouté !';
+            return $this->cn->lastInsertId();
         } catch ( \PDOException $exception ) {
-            $_SESSION['error'][] = 'La connexion à la BDD n\'a pu être établie. L\'ajout du livre a échoué !';
+            return false;
         }
     }
 
@@ -54,6 +53,7 @@ class Books extends Model {
             ]);
             $_SESSION['success'][] = 'Version ajoutéé !';
         } catch ( \PDOException $exception ) {
+            $_SESSION['error'][] = $exception;
             $_SESSION['error'][] = 'La connexion à la BDD n\'a pu être établie. L\'ajout de la version a échoué !';
         }
     }
