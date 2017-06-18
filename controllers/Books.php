@@ -27,7 +27,14 @@ class Books extends Controller
 
     public function zoom()
     {
-
+        if( !isset( $_GET['id'] ) OR intval( $_GET['id'], 10) < 1 ) {
+            $_SESSION['error'][] = 'Paramètre invalide';
+            header( 'Location: ' . HARDCODED_URL . 'index.php?r=books&a=list' );
+            exit;
+        }
+        $book = $this->modelBooks->getBook( $_GET['id'] );
+        return [ 'view' => 'views/book.php',
+            'book' => $book];
     }
 
     public function add()

@@ -25,6 +25,24 @@ class Books extends Model {
         }
     }
 
+    public function getBook( $id ) {
+        try {
+            $pdoSt = $this->cn->prepare(
+                'SELECT books.id, books.title, books.synopsis, books.tags,
+                  authors.id AS author_id, authors.alias_name AS author,
+                  genres.id AS genre_id, genres.name AS genre
+                  FROM books
+                  JOIN authors ON books.authors_id = authors.id
+                  JOIN genres ON books.genres_id = genres.id
+                  WHERE books.id = :id;'
+            );
+            $pdoSt->execute( [ ':id' => $id ] );
+            return $pdoSt->fetch();
+        } catch ( \PDOException $exception ) {
+            return null;
+        }
+    }
+
     public function addBook( $book ) {
         try {
             $pdoSt = $this->cn->prepare(
