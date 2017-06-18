@@ -2,15 +2,18 @@
 namespace Models;
 
 class User extends Model {
-    public function getUser( $code, $password ) {
+    public function getUser( $code, $password = null ) {
+        if( is_null( $password ) ) {
+            $sql = 'SELECT * FROM library.users WHERE bar_code = :code';
+            $param = [ ':code' => $code ];
+        } else {
+            $sql = 'SELECT * FROM library.users WHERE bar_code = :code AND password = :password';
+            $param = [':code' => $code,
+                ':password' => $password];
+        }
         try {
-            $pdoSt = $this->cn->prepare(
-                'SELECT * FROM library.users WHERE bar_code = :code AND password = :password'
-            );
-            $pdoSt->execute([
-                ':code' => $code,
-                ':password' => $password
-            ]);
+            $pdoSt = $this->cn->prepare( $sql );
+            $pdoSt->execute($param);
             return $pdoSt->fetch();
         } catch ( \PDOException $exception ) {
             return null;
@@ -69,7 +72,6 @@ class User extends Model {
             $_SESSION['success'][] = 'Inscription réussie !';
         } catch ( \PDOException $exception ) {
             $_SESSION['error'][] = 'La connexion à la BDD n\'a pu être établie. Inscription échouée !';
-            $_SESSION['error'][] = $exception;
         }
     }
 }
