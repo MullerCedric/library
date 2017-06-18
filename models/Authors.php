@@ -13,6 +13,18 @@ class Authors extends Model {
         }
     }
 
+    public function getAuthor( $id ) {
+        try {
+            $pdoSt = $this->cn->prepare(
+                'SELECT * FROM authors WHERE authors.id = :id'
+            );
+            $pdoSt->execute( [ ':id' => $id ] );
+            return $pdoSt->fetch();
+        } catch ( \PDOException $exception ) {
+            return null;
+        }
+    }
+
     public function checkBirthDate( $date ) {
         $date = trim( $date );
         $date = preg_replace( '#/#U', '-' , $date );

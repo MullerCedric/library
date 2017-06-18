@@ -1,14 +1,14 @@
 <?php
 namespace Controllers;
-use Models\Model as Model;
 use Models\Authors as ModelAuthors;
+use Models\Books as ModelBooks;
 class Authors extends Controller {
-    private $model = null;
     private $modelAuthors = null;
+    private $modelBooks = null;
     public  function __construct()
     {
-        $this->model = new Model();
         $this->modelAuthors = new ModelAuthors();
+        $this->modelBooks = new ModelBooks();
     }
 
     public function list() {
@@ -18,7 +18,16 @@ class Authors extends Controller {
     }
 
     public function zoom() {
-        return [ 'view' => 'views/author.php' ];
+        if( !isset( $_GET['id'] ) OR intval( $_GET['id'], 10) < 1 ) {
+            $_SESSION['error'][] = 'Paramètre invalide';
+            header( 'Location: ' . HARDCODED_URL . 'index.php?r=authors&a=list' );
+            exit;
+        }
+        $author = $this->modelAuthors->getAuthor( $_GET['id'] );
+        $books = $this->modelBooks->getBooksFromAuthor( $_GET['id'] );
+        return [ 'view' => 'views/author.php',
+            'author' => $author,
+            'books' => $books];
     }
 
     public function add() {

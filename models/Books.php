@@ -13,6 +13,18 @@ class Books extends Model {
         }
     }
 
+    public function getBooksFromAuthor( $author_id ) {
+        try {
+            $pdoSt = $this->cn->prepare(
+                'SELECT id, title FROM library.books WHERE authors_id = :author_id'
+            );
+            $pdoSt->execute( [ ':author_id' => $author_id ] );
+            return $pdoSt->fetchAll();
+        } catch ( \PDOException $exception ) {
+            return null;
+        }
+    }
+
     public function addBook( $book ) {
         try {
             $pdoSt = $this->cn->prepare(
