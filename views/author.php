@@ -1,7 +1,4 @@
 <?php
-require 'partials/_header.php';
-require 'partials/_search.php';
-
 if ( $data['author'] === null OR empty( $data['author'] ) ) : ?>
     <div>
         Aucun résultat n'a été trouvé

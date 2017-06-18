@@ -1,7 +1,3 @@
-<?php
-require 'partials/_header.php';
-require 'partials/_search.php';
-?>
 <div>
     <a href="#">Mes emprunts & réservations</a>
 </div>

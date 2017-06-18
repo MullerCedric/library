@@ -1,5 +1,4 @@
 <header>
-
     <?php
         if ( isset( $_SESSION['user'] ) && $_SESSION['user']->is_admin ) {
             require '_navAdmin.php';
@@ -8,5 +7,6 @@
         } else {
             require '_navBase.php';
         }
-    ?>
+
+    require '_search.php'; ?>
 </header>

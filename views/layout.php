@@ -5,10 +5,14 @@
     <title><?php //<?= $data['title'] ?> - Bibliothèque des Chiroux</title>
 <!--    <link rel="stylesheet" href="./views/css/screen.css">-->
 </head>
-<body>
-<?php if( isset($_SESSION['error']) ) var_dump($_SESSION['error']);
+<body><?php
+require 'partials/_header.php';
+
+if( isset($_SESSION['error']) ) var_dump($_SESSION['error']);
 if( isset($_SESSION['success']) ) var_dump($_SESSION['success']);
+
 require $data['view'];
+
 $_SESSION['error'] = [];
 unset( $_SESSION['error'] );
 $_SESSION['success'] = [];

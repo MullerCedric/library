@@ -1,6 +1,3 @@
-<?php
-require 'partials/_header.php'; ?>
-
 <div class="main-content">
     <h1>S'inscrire</h1>
     <form action="index.php" method="post">

@@ -1,6 +1,3 @@
-<?php
-require 'partials/_header.php'; ?>
-
 <div class="main-content">
     <h1>Ajouter une version d'un livre</h1>
     <p>

@@ -1,7 +1,4 @@
 <?php
-require 'partials/_header.php';
-require 'partials/_search.php';
-
 if ( $data['found'] === null ) {
     echo 'Aucun résultat n\'a été trouvé';
 } else { ?>
