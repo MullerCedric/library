@@ -6,7 +6,9 @@
 <!--    <link rel="stylesheet" href="./views/css/screen.css">-->
 </head>
 <body>
-<?php require $data['view'];
+<?php if( isset($_SESSION['error']) ) var_dump($_SESSION['error']);
+if( isset($_SESSION['success']) ) var_dump($_SESSION['success']);
+require $data['view'];
 $_SESSION['error'] = [];
 unset( $_SESSION['error'] );
 $_SESSION['success'] = [];
