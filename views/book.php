@@ -25,4 +25,11 @@ if ( $data['book'] === null OR empty( $data['book'] ) ) : ?>
             else echo $data['book']->tags; ?>
         </p>
     </div>
+    <div>
+        <ul><?php
+            foreach ($data['book_versions'] as $version){
+                echo '<li>' . $version->publication . ' <a href="index.php?r=borrowings&a=added&isbn='. urlencode($version->ISBN) .'">Réserver cette version</a></li>' ;
+            }?>
+        </ul>
+    </div>
 <?php endif; ?>

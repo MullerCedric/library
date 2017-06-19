@@ -43,6 +43,30 @@ class Books extends Model {
         }
     }
 
+    public function getBookVersions( $book_id ) {
+        try {
+            $pdoSt = $this->cn->prepare(
+                'SELECT * FROM library.books_versions WHERE books_id = :book_id'
+            );
+            $pdoSt->execute( [ ':book_id' => $book_id ] );
+            return $pdoSt->fetchAll();
+        } catch ( \PDOException $exception ) {
+            return null;
+        }
+    }
+
+    public function getVersion( $ISBN ) {
+        try {
+            $pdoSt = $this->cn->prepare(
+                'SELECT * FROM library.books_versions WHERE ISBN = :ISBN'
+            );
+            $pdoSt->execute( [ ':ISBN' => $ISBN ] );
+            return $pdoSt->fetch();
+        } catch ( \PDOException $exception ) {
+            return null;
+        }
+    }
+
     public function addBook( $book ) {
         try {
             $pdoSt = $this->cn->prepare(

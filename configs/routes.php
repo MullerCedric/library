@@ -35,7 +35,6 @@ return [
 
     /* BORROWINGS */
     'borrowings' => 'GET/borrowings/list',
-    'addBorrowing' => 'GET/borrowings/add',
     'addedBorrowing' => 'GET/borrowings/added',
 
     /* GENRES */

@@ -33,8 +33,10 @@ class Books extends Controller
             exit;
         }
         $book = $this->modelBooks->getBook( $_GET['id'] );
+        $book_versions = $this->modelBooks->getBookVersions( $_GET['id'] );
         return [ 'view' => 'views/book.php',
-            'book' => $book];
+            'book' => $book,
+            'book_versions' => $book_versions];
     }
 
     public function add()
