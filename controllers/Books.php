@@ -125,6 +125,13 @@ class Books extends Controller
         }
 
         $books = $this->modelBooks->getBooks();
+        foreach ($books as $book){
+            if( isset( $_GET['id'] ) && $book->id == $_GET['id'] ) {
+                $book->selected = true;
+            } else {
+                $book->selected = false;
+            }
+        }
         return ['view' => 'views/addVersion.php',
             'booksList' => $books];
     }

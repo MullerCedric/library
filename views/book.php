@@ -39,6 +39,9 @@ if ( $data['book'] === null OR empty( $data['book'] ) ) : ?>
                 }
                 echo '</li>';
             }?>
-        </ul>
+        </ul><?php
+        if( isset($_SESSION['user']) && $_SESSION['user']->is_admin ) {
+            echo ' <a href="index.php?r=books&a=addVersion&id='. $data['book']->id .'">Ajouter une version à ce livre</a>';
+        }?>
     </div>
 <?php endif; ?>

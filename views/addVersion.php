@@ -11,7 +11,11 @@
             <select id="books_id" name="books_id">
                 <?php
                 foreach ($data['booksList'] as $book){
-                    echo '<option value="' . $book->id . '">' . $book->title . '</option>' ;
+                    if( $book->selected ) {
+                        echo '<option value="' . $book->id . '" selected>' . $book->title . '</option>' ;
+                    } else {
+                        echo '<option value="' . $book->id . '">' . $book->title . '</option>' ;
+                    }
                 } ?>
             </select>
         </p>
