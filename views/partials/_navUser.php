@@ -13,6 +13,9 @@
             <a href="index.php?r=genres&a=list">Liste des genres</a>
         </li>
         <li>
+            <a href="index.php?r=borrowings&a=list">Liste de vos emprunts</a>
+        </li>
+        <li>
             <a href="index.php?r=user&a=loggedOut">Se déconnecter</a>
         </li>
     </ul>

@@ -18,7 +18,16 @@ class Borrowings extends Controller {
     }
 
     public function list() {
-
+        if( !$this->is_connected() ) {
+            $_SESSION['error'][] = 'Vous devez être connecté pour accéder à cette page';
+            header( 'Location: ' . HARDCODED_URL . 'index.php?r=user&a=logIn' );
+            exit;
+        }
+        if ( ! $borrowings = $this->modelBorrowings->getBooksBorrowed( $_SESSION['user']->bar_code ) ) {
+            $borrowings = null;
+        }
+        return ['view' => 'views/borrowings.php',
+            'borrowings' => $borrowings ];
     }
 
     public function added() {
