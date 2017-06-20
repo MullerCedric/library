@@ -8,15 +8,7 @@
 <body><?php
 require 'partials/_header.php';
 
-if( isset($_SESSION['error']) ) var_dump($_SESSION['error']);
-if( isset($_SESSION['success']) ) var_dump($_SESSION['success']);
-
-require $data['view'];
-
-$_SESSION['error'] = [];
-unset( $_SESSION['error'] );
-$_SESSION['success'] = [];
-unset( $_SESSION['success'] ); ?>
+require $data['view']; ?>
 
 <footer>
     <p>Made by Cédric Müller in 2017</p>

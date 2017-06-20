@@ -44,16 +44,32 @@ class Authors extends Controller {
             header( 'Location: ' . HARDCODED_URL . 'index.php?r=authors&a=add' );
             exit;
         }
-        $birthDate = $_POST['birth_date'] ? $this->modelAuthors->checkBirthDate( $_POST['birth_date'] ) : null;
-        $picture = $_POST['picture'] ? $this->modelAuthors->checkPictureURL( $_POST['picture'] ) : null;
+        if ( isset( $_POST['birth_date'] ) ) {
+            if ( ! $birthDate = $this->modelAuthors->checkBirthDate( $_POST['birth_date'] ) ) {
+                $_SESSION['warning'][] = 'La date fournie n\'était pas au bon format. Elle a donc été ignorée';
+            }
+        } else {
+            $birthDate = null;
+        }
+        if ( isset( $_POST['picture'] ) ) {
+            if ( ! $picture = preg_match( '#(\.jpg|\.jpeg|\.png)$#', $_POST['picture'] ) ) {
+                $_SESSION['warning'][] = 'La photo fournie n\'était pas au bon format. Elle a donc été ignorée';
+            }
+        } else {
+            $picture = null;
+        }
         $description = $_POST['description'] ?? null;
 
-        $this->modelAuthors->addAuthor( [
+        if ( $this->modelAuthors->addAuthor( [
             'alias_name' => trim( $_POST['name'] ),
             'birth_date' => $birthDate,
             'picture' => $picture,
             'description' => $description
-        ] );
+        ] ) ) {
+            $_SESSION['success'][] = 'Le nouvel auteur a bien été ajouté !';
+        } else {
+            $_SESSION['error'][] = 'La connexion à la BDD n\'a pu être établie. Le nouvel auteur n\'a pas été ajouté';
+        }
 
         header( 'Location: ' . HARDCODED_URL . 'index.php?r=authors&a=add' );
         exit;

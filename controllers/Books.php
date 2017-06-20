@@ -32,7 +32,6 @@ class Books extends Controller
     {
         $id = 1;
         if( isset( $_GET['id'] ) || isset( $_GET['isbn'] ) ) {
-
             if ( isset( $_GET['id'] ) ) {
                 if ( intval( $_GET['id'], 10) < 1 ) {
                     $_SESSION['error'][] = 'Paramètre invalide';
@@ -103,16 +102,14 @@ class Books extends Controller
         $tags = $_POST['tags'] ? trim($_POST['tags']) : null;
         $series_id = $_POST['series_id'] ? $this->modelBooks->checkId($_POST['series_id']) : null;
 
-        $books_id = $this->modelBooks->addBook([
+        if ( $books_id = $this->modelBooks->addBook([
             'title' => trim($_POST['title']),
             'synopsis' => $synopsis,
             'tags' => $tags,
             'authors_id' => $_POST['authors_id'],
             'series_id' => $series_id,
             'genres_id' => $_POST['genres_id']
-        ]);
-
-        if($books_id){
+        ]) ) {
             $_SESSION['success'][] = 'Livre ajouté !';
             $this->addedVersion($books_id);
         }else{
@@ -140,22 +137,39 @@ class Books extends Controller
         }
         $books_id = $_POST['books_id'] ?? $books_id;
 
-        if (!$this->modelBooks->isAValidString($_POST['isbn']) OR
-            !$this->modelBooks->isAValidString($_POST['publication']) OR
-            !$this->modelBooks->isAValidString($_POST['lang']) OR
-            !$this->modelBooks->isAValidPosInt($_POST['page_number']) OR
-            !$this->modelBooks->isAValidPosInt($_POST['copies']) OR
-            !$this->modelBooks->isAValidPosInt($books_id)
-        ) {
-            $_SESSION['error'][] = $_POST;
-            $_SESSION['error'][] = 'L\'un ou plusieurs des paramètres fourni(s) est/sont incorrect(s). L\'ajout de la version a échoué !';
-            header('Location: ' . HARDCODED_URL . 'index.php?r=books&a=add');
+        if ( !isset( $_POST['isbn'] ) || !$this->modelBooks->isAValidString($_POST['isbn']) ) {
+            $_SESSION['error'][] = 'Un ISBN contient au moins 10 caractères';
+        }
+        if ( !isset( $_POST['publication'] ) || !$this->modelBooks->isAValidString($_POST['publication']) ) {
+            $_SESSION['error'][] = 'Le champ "publication" n\'a pas été remplis correctement';
+        }
+        if ( !isset( $_POST['lang'] ) || !$this->modelBooks->isAValidString($_POST['lang']) ) {
+            $_SESSION['error'][] = 'Le champ "langue" n\'a pas été remplis correctement';
+        }
+        if ( !isset( $_POST['page_number'] ) || !$this->modelBooks->isAValidPosInt($_POST['page_number']) ) {
+            $_SESSION['error'][] = 'Le nombre de pages n\'a pas été correctement renseigné';
+        }
+        if ( !isset( $_POST['copies'] ) || !$this->modelBooks->isAValidPosInt($_POST['copies']) ){
+            $_SESSION['error'][] = 'Le nombre de copies n\'a pas été correctement renseigné';
+        }
+        if ( !$this->modelBooks->isAValidPosInt($books_id) ) {
+            $_SESSION['error'][] = 'Le livre auquel ajouter la version n\'est pas correct';
+        }
+        if ( isset( $_SESSION['error'] ) ) {
+            $_SESSION['error'][] = 'L\'ajout de la version a échoué !';
+            header('Location: ' . HARDCODED_URL . 'index.php?r=books&a=addVersion');
             exit;
         }
-        $cover = $_POST['cover'] ? $this->modelBooks->checkCoverURL($_POST['cover']) : null;
+        if ( isset( $_POST['cover'] ) ) {
+            if ( ! $cover = preg_match( '#(\.jpg|\.jpeg|\.png)$#', $_POST['cover'] ) ) {
+                $_SESSION['warning'][] = 'La photo fournie n\'était pas au bon format. Elle a donc été ignorée';
+            }
+        } else {
+            $cover = null;
+        }
         $description = $_POST['description'] ? trim($_POST['description']) : null;
 
-        $this->modelBooks->addVersion([
+        if ( $this->modelBooks->addVersion([
             'ISBN' => trim($_POST['isbn']),
             'publication' => trim($_POST['publication']),
             'cover' => $cover,
@@ -164,7 +178,11 @@ class Books extends Controller
             'description' => $description,
             'page_number' => $_POST['page_number'],
             'books_id' => $books_id
-        ]);
+        ]) ) {
+            $_SESSION['success'][] = 'Version ajoutéé !';
+        } else {
+            $_SESSION['error'][] = 'La connexion à la BDD n\'a pu être établie. L\'ajout de la version a échoué !';
+        }
 
         header('Location: ' . HARDCODED_URL . 'index.php?r=books&a=add');
         exit;

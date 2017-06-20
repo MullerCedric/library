@@ -27,7 +27,6 @@ class Subscriptions extends Model {
                     ':duration' => $duration,
                     ':user_bar_code' => $code
                 ]);
-
                 return true;
             }
 

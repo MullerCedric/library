@@ -2,5 +2,11 @@
 require 'configs/config.php';
 require 'vendor/autoload.php';
 require './router.php';
-/* vérifier si api ou page pour savoir si l'on inclu le layout ou si on echo juste le json */
 require 'views/layout.php';
+
+$_SESSION['error'] = [];
+unset( $_SESSION['error'] );
+$_SESSION['warning'] = [];
+unset( $_SESSION['warning'] );
+$_SESSION['success'] = [];
+unset( $_SESSION['success'] );

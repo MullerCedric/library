@@ -16,21 +16,37 @@ class User extends Controller {
     }
 
     public function signedUp() {
-        if(
-        !$this->modelUser->isAValidBarCode( $_POST['bar_code'] ) OR
-        !$this->modelUser->isAValidPassword( $_POST['password'] ) OR
-        !$this->modelUser->isAValidString( $_POST['first_name'] ) OR
-        !$this->modelUser->isAValidString( $_POST['last_name'] ) OR
-        !$this->modelUser->isAValidEmail( $_POST['email'] ) OR
-        !$this->modelUser->isAValidString( $_POST['city'] ) OR
-        !$this->modelUser->isAValidPostalCode( $_POST['postal_code'] ) OR
-        !$this->modelUser->isAValidString( $_POST['address'] ) ) {
-            $_SESSION['error'][] = 'L\'un ou plusieurs des paramètres fourni(s) est/sont incorrect(s). Inscription échouée !';
-            header( 'Location: ' . HARDCODED_URL . 'index.php?r=user&a=signIn' );
+        if( !isset( $_POST['bar_code'] ) || !preg_match( "#^[0-9]{6}$#", trim( $_POST['bar_code'] ) ) ) {
+            $_SESSION['error'][] = 'Le code barre fourni est incorrect. Merci de l\'écrire sous le format : <span class="format">000000</span>';
+        }
+        if( !isset( $_POST['password'] ) || !preg_match( "#^(.*[A-Z].*[^a-zA-Z].*|.*[^a-zA-Z].*[A-Z].*)$#", trim( $_POST['password'] ) ) ) {
+            $_SESSION['error'][] = 'Le mot de passe fourni est incorrect. Ce dernier doit contenir au moins une majuscule et un caractère qui n\'est pas une lettre ';
+        }
+        if( !isset( $_POST['first_name'] ) || strlen( trim( $_POST['first_name'] ) ) < 2 ){
+            $_SESSION['error'][] = 'Le prénom fourni est incorrect. Merci de l\'écrire sous le format : <span class="format">Prénom</span>';
+        }
+        if( !isset( $_POST['last_name'] ) || strlen( trim( $_POST['last_name'] ) ) < 2 ) {
+            $_SESSION['error'][] = 'Le nom fourni est incorrect. Merci de l\'écrire sous le format : <span class="format">Nom</span>';
+        }
+        if( !isset( $_POST['email'] ) || !filter_var( $_POST['email'], FILTER_VALIDATE_EMAIL ) ) {
+            $_SESSION['error'][] = 'L\'adresse e-mail fournie est incorrecte. Merci de l\'écrire sous le format : <span class="format">adresse@domaine.ext</span>';
+        }
+        if( !isset( $_POST['city'] ) || strlen( trim( $_POST['city'] ) ) < 2 ) {
+            $_SESSION['error'][] = 'La ville fournie est incorrecte. Merci de l\'écrire sous le format : <span class="format">Ville</span>';
+        }
+        if( !isset( $_POST['postal_code'] ) || !preg_match( "#^[1-9][0-9]{3}$#", trim( $_POST['postal_code'] ) ) ) {
+            $_SESSION['error'][] = 'Le code postal fourni est incorrect. Merci de l\'écrire sous le format : <span class="format">0000</span>';
+        }
+        if( !isset( $_POST['address'] ) || !preg_match( "#^[a-zA-Z]{3,}[ a-zA-Z]*,? ?[0-9]+$#", trim( $_POST['address'] ) ) ) {
+            $_SESSION['error'][] = 'L\'adresse fournie est incorrecte. Merci de l\'écrire sous le format : <span class="format">rue, numéro</span>';
+        }
+        if ( isset( $_SESSION['error'] ) ) {
+            $_SESSION['error'][] = 'Inscription échouée !';
+            header( 'Location: ' . HARDCODED_URL . 'index.php?r=user&a=signUp' );
             exit;
         }
 
-        $this->modelUser->addUser( [
+        if ( $this->modelUser->addUser( [
             'bar_code' => $_POST['bar_code'],
             'password' => hash( 'sha256', $_POST['password'] ),
             'first_name' => $_POST['first_name'],
@@ -39,8 +55,11 @@ class User extends Controller {
             'city' => $_POST['city'],
             'postal_code' => $_POST['postal_code'],
             'address' => $_POST['address']
-        ] );
-
+        ] ) ) {
+            $_SESSION['success'][] = 'Inscription réussie !';
+        } else {
+            $_SESSION['error'][] = 'La connexion à la BDD n\'a pu être établie. Inscription échouée !';
+        }
         header( 'Location: ' . HARDCODED_URL . 'index.php?r=user&a=logIn' );
         exit;
     }
@@ -50,15 +69,24 @@ class User extends Controller {
     }
 
     public function loggedIn() {
-        $_SESSION['user'] = null;
-        $code = $_POST['code'];
-        $password = hash( 'sha256', $_POST['password'] );
-        $user = $this->modelUser->getUser( $code, $password );
-        if ( !$user ) {
-            header( 'Location: ' . HARDCODED_URL );
+        if( !isset( $_POST['code'] ) || !preg_match( "#^[0-9]{6}$#", trim( $_POST['code'] ) ) ) {
+            $_SESSION['error'][] = 'Le code barre fourni est incorrect. Merci de l\'écrire sous le format : <span class="format">000000</span>';
+        }
+        if( !isset( $_POST['password'] ) || !preg_match( "#^(.*[A-Z].*[^a-zA-Z].*|.*[^a-zA-Z].*[A-Z].*)$#", trim( $_POST['password'] ) ) ) {
+            $_SESSION['error'][] = 'Le mot de passe fourni est incorrect. Ce dernier doit contenir au moins une majuscule et un caractère qui n\'est pas une lettre ';
+        }
+        if ( isset( $_SESSION['error'] ) ) {
+            $_SESSION['error'][] = 'Connexion échouée !';
+            header( 'Location: ' . HARDCODED_URL . 'index.php?r=user&a=logIn' );
+            exit;
+        }
+        if ( ! $user = $this->modelUser->getUser( $_POST['code'], hash( 'sha256', $_POST['password'] ) ) ) {
+            $_SESSION['error'][] = 'Votre code barre ou votre mot de passe est incorrect. Connexion échouée !';
+            header( 'Location: ' . HARDCODED_URL . 'index.php?r=user&a=logIn' );
             exit;
         }
         $_SESSION['user'] = $user;
+        $_SESSION['success'][] = 'Connexion réussie !';
         header( 'Location: ' . HARDCODED_URL . 'index.php?r=page&a=dashboard' );
         exit;
     }

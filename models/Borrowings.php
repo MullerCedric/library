@@ -43,7 +43,6 @@ class Borrowings extends Model {
             ]);
             return true;
         } catch ( \PDOException $exception ) {
-            $_SESSION['error'][] = $exception->getMessage();
             return false;
         }
     }

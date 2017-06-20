@@ -21,9 +21,9 @@ class Genres extends Model {
             $pdoSt->execute([
                 ':name' => $name
             ]);
-            $_SESSION['success'][] = 'Le nouveau genre a bien été ajouté !';
+            return true;
         } catch ( \PDOException $exception ) {
-            $_SESSION['error'][] = 'La connexion à la BDD n\'a pu être établie. Le nouveau genre n\'a pas été ajouté';
+            return false;
         }
     }
 

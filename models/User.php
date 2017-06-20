@@ -69,9 +69,9 @@ class User extends Model {
                 ':postal_code' => $user['postal_code'],
                 ':address' => $user['address']
             ]);
-            $_SESSION['success'][] = 'Inscription réussie !';
+            return true;
         } catch ( \PDOException $exception ) {
-            $_SESSION['error'][] = 'La connexion à la BDD n\'a pu être établie. Inscription échouée !';
+            return false;
         }
     }
 }

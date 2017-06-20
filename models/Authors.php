@@ -35,7 +35,6 @@ class Authors extends Model {
         } elseif ( preg_match( '#^[0-3][0-9]-[01][0-9]-[0-9]{4}$#', $date ) ) {
             return preg_replace( '#^([0-3][0-9])-([01][0-9])-([0-9]{4})$#', '$3-$2-$1' , $date );
         } else {
-            $_SESSION['error'][] = 'La date fournie n\'était pas au bon format. Elle a donc été ignorée';
             return null;
         }
     }
@@ -60,10 +59,9 @@ class Authors extends Model {
                 ':picture' => $author['picture'],
                 ':description' => $author['description'],
             ]);
-            $_SESSION['success'][] = 'Le nouvel auteur a bien été ajouté !';
+            return true;
         } catch ( \PDOException $exception ) {
-            $_SESSION['error'][] = 'La connexion à la BDD n\'a pu être établie. Le nouveau genre n\'a pas été ajouté';
-            die( $exception );
+            return false;
         }
     }
 

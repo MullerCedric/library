@@ -36,7 +36,11 @@ class Genres extends Controller {
             exit;
         }
 
-        $this->modelGenres->addGenre( $_POST['name'] );
+        if ( $this->modelGenres->addGenre( $_POST['name'] ) ) {
+            $_SESSION['success'][] = 'Le nouveau genre a bien été ajouté !';
+        } else {
+            $_SESSION['error'][] = 'La connexion à la BDD n\'a pu être établie. Le nouveau genre n\'a pas été ajouté';
+        }
         header( 'Location: ' . HARDCODED_URL . 'index.php?r=genres&a=add' );
         exit;
     }

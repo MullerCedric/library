@@ -31,10 +31,15 @@ class Subscriptions extends Controller {
             header('Location: ' . HARDCODED_URL);
             exit;
         }
-        if( !isset($_POST['bar_code']) OR !preg_match( "#^[0-9]{6}$#", $_POST['bar_code'] ) OR
-            !isset($_POST['duration']) OR !preg_match( "#^[1-9][0-9]*$#", $_POST['duration'] )) {
-            $_SESSION['error'][] = 'L\'un ou plusieurs des paramètres fourni(s) est/sont incorrect(s). L\'abonnement n\'est pas actif !';
+        if( !isset($_POST['bar_code']) OR !preg_match( "#^[0-9]{6}$#", $_POST['bar_code'] ) ) {
+            $_SESSION['error'][] = 'Le code barre fourni est incorrect. Merci de l\'écrire sous le format : <span class="format">000000</span>';
+        }
+        if( !isset($_POST['duration']) OR !preg_match( "#^[1-9][0-9]*$#", $_POST['duration'] ) ) {
+            $_SESSION['error'][] = 'Merci d\'entrer une durée d\'abonnement valide (à partir de 1 mois)';
             $_SESSION['error'][] = $_POST;
+        }
+        if ( isset( $_SESSION['error'] ) ) {
+            $_SESSION['error'][] = 'L\'abonnement n\'a pas été activé !';
             header( 'Location: ' . HARDCODED_URL . 'index.php?r=subscriptions&a=add' );
             exit;
         }
@@ -44,8 +49,8 @@ class Subscriptions extends Controller {
             exit;
         }
 
-        if( $ending_date = $this->modelSubscriptions->addSubscription( $_POST['bar_code'], $_POST['duration'] )) {
-            $_SESSION['error'][] = 'L\'abonnement du membre a été prolongé de ' . $_POST['duration'] . ' mois';
+        if( $this->modelSubscriptions->addSubscription( $_POST['bar_code'], $_POST['duration'] ) ) {
+            $_SESSION['success'][] = 'L\'abonnement du membre a été prolongé de ' . $_POST['duration'] . ' mois';
         } else {
             $_SESSION['error'][] = 'La connexion à la BDD n\'a pu être établie';
         }

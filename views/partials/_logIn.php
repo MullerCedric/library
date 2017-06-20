@@ -5,15 +5,15 @@
             <legend>Vos infos</legend>
             <p>
                 <label for="code">
-                    <span>Le numéro de votre code barre <span>(visible sur votre carte Chiroux ou dans le mail d'inscription</span></span>
+                    <span>Le numéro de votre code barre <span>(visible sur votre carte Chiroux ou dans le mail d'inscription)*</span></span>
                 </label>
-                <input type="number" id="code" name="code">
+                <input type="number" id="code" name="code" max="999999" required>
             </p>
             <p>
                 <label for="password">
-                    <span>Votre mot de passe</span>
+                    <span>Votre mot de passe*</span>
                 </label>
-                <input type="password" id="password" name="password">
+                <input type="password" id="password" name="password" required>
             </p>
 
             <input type="hidden" name="r" value="user">

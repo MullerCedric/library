@@ -8,7 +8,7 @@ class Model {
     function __construct()
     {
         if ( !file_exists( DB_FILE ) ) {
-            return ['error' => 'Le fichier de configuration de la BDD est introuvable'];
+            die('Le fichier de configuration de la BDD est introuvable');
         }
 
         $dbDatas = parse_ini_file( DB_FILE );
@@ -23,7 +23,7 @@ class Model {
             $this->cn->exec('SET NAMES UTF8');
             return true;
         } catch ( \PDOException $exception ) {
-            return ['error' => 'La connexion à la BDD a échoué'];
+            die('La connexion à la BDD a échoué');
         }
     }
 }

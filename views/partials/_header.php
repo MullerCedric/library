@@ -10,3 +10,4 @@
 
     require '_search.php'; ?>
 </header>
+<?php require '_displayFeedbacks.php';

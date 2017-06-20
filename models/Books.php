@@ -120,10 +120,9 @@ class Books extends Model {
                 ':page_number' => $version['page_number'],
                 ':books_id' => $version['books_id']
             ]);
-            $_SESSION['success'][] = 'Version ajoutéé !';
+            return true;
         } catch ( \PDOException $exception ) {
-            $_SESSION['error'][] = $exception;
-            $_SESSION['error'][] = 'La connexion à la BDD n\'a pu être établie. L\'ajout de la version a échoué !';
+            return false;
         }
     }
 
