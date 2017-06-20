@@ -24,24 +24,18 @@ class Search extends Controller {
         }
         switch ( $_GET['type'] ) {
             case "author":
-                echo 'Author';
-                $found = $this->modelAuthors->findAuthor( $_GET['q'] );
-                foreach ($found as $result){
-                    $result->full_name = $result->alias_name ;
+                if ( $found = $this->modelAuthors->findAuthor( $_GET['q'] ) ) {
+                    $type = $_GET['type'];
                 }
                 break;
             case "book":
-                echo 'Book';
-                $found = $this->modelBooks->findBook( $_GET['q'] );
-                foreach ($found as $result){
-                    $result->full_name = $result->title ;
+                if ( $found = $this->modelBooks->findBook( $_GET['q'] ) ) {
+                    $type = $_GET['type'];
                 }
                 break;
             case "genre":
-                echo 'Genre';
-                $found = $this->modelGenres->findGenre( $_GET['q'] );
-                foreach ($found as $result){
-                    $result->full_name = $result->name ;
+                if ( $found = $this->modelGenres->findGenre( $_GET['q'] ) ) {
+                    $type = $_GET['type'];
                 }
                 break;
             default:
@@ -49,6 +43,7 @@ class Search extends Controller {
         }
 
         return [ 'view' => 'views/find.php',
-            'found' => $found];
+            'found' => $found,
+            'type' => $type ];
     }
 }
