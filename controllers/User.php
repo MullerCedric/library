@@ -17,7 +17,12 @@ class User extends Controller {
             header( 'Location: ' . HARDCODED_URL );
             exit;
         }
-        return ['view' => 'views/signUp.php'];
+        $newBarCode = random_int( 100000, 999999 );
+        while ( $this->modelUser->getUser( $newBarCode ) ) {
+            $newBarCode = random_int( 100000, 999999 );
+        }
+        return ['view' => 'views/signUp.php',
+            'newBarCode' => $newBarCode];
     }
 
     public function signedUp() {
@@ -26,8 +31,8 @@ class User extends Controller {
             header( 'Location: ' . HARDCODED_URL );
             exit;
         }
-        if( !isset( $_POST['bar_code'] ) || !preg_match( "#^[0-9]{6}$#", trim( $_POST['bar_code'] ) ) ) {
-            $_SESSION['error'][] = 'Le code barre fourni est incorrect. Merci de l\'écrire sous le format : <span class="format">000000</span>';
+        if( !isset( $_POST['bar_code'] ) || !preg_match( "#^[0-9]{6}$#", trim( $_POST['bar_code'] ) ) || $this->modelUser->getUser( $_POST['bar_code'] ) ) {
+            $_SESSION['error'][] = 'Le code barre fourni est incorrect. Veuillez réessayer';
         }
         if( !isset( $_POST['password'] ) || !preg_match( "#^(.*[A-Z].*[^a-zA-Z].*|.*[^a-zA-Z].*[A-Z].*)$#", trim( $_POST['password'] ) ) ) {
             $_SESSION['error'][] = 'Le mot de passe fourni est incorrect. Ce dernier doit contenir au moins une majuscule et un caractère qui n\'est pas une lettre ';

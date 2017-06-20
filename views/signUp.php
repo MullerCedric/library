@@ -5,8 +5,8 @@
             <legend>Vos infos d'identification</legend>
             <p>
                 <span>Votre numéro de code barre </span>
-                <span>123456</span>
-                <input type="hidden" value="123456" name="bar_code" >
+                <span><?= $data['newBarCode']; ?></span>
+                <input type="hidden" value="<?= $data['newBarCode']; ?>" name="bar_code" >
             </p>
             <p>
                 <label for="password">
