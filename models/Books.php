@@ -1,9 +1,11 @@
 <?php
 namespace Models;
 
-class Books extends Model {
-    public function getBooks( $order = null, $filter = null ) {
-        if ( $filter ) {
+class Books extends Model
+{
+    public function getBooks($order = null, $filter = null)
+    {
+        if ($filter) {
             $sql = 'SELECT books.id, title FROM library.books
                     JOIN genres ON books.genres_id = genres.id
                     WHERE genres_id = ' . $filter;
@@ -32,26 +34,28 @@ class Books extends Model {
         }
 
         try {
-            $pdoSt = $this->cn->query( $sql );
+            $pdoSt = $this->cn->query($sql);
             return $pdoSt->fetchAll();
-        } catch ( \PDOException $exception ) {
+        } catch (\PDOException $exception) {
             return null;
         }
     }
 
-    public function getBooksFromAuthor( $author_id ) {
+    public function getBooksFromAuthor($author_id)
+    {
         try {
             $pdoSt = $this->cn->prepare(
                 'SELECT id, title FROM library.books WHERE authors_id = :author_id'
             );
-            $pdoSt->execute( [ ':author_id' => $author_id ] );
+            $pdoSt->execute([':author_id' => $author_id]);
             return $pdoSt->fetchAll();
-        } catch ( \PDOException $exception ) {
+        } catch (\PDOException $exception) {
             return null;
         }
     }
 
-    public function getBook( $id ) {
+    public function getBook($id)
+    {
         try {
             $pdoSt = $this->cn->prepare(
                 'SELECT books.id, books.title, books.synopsis, books.tags,
@@ -62,14 +66,15 @@ class Books extends Model {
                   JOIN genres ON books.genres_id = genres.id
                   WHERE books.id = :id;'
             );
-            $pdoSt->execute( [ ':id' => $id ] );
+            $pdoSt->execute([':id' => $id]);
             return $pdoSt->fetch();
-        } catch ( \PDOException $exception ) {
+        } catch (\PDOException $exception) {
             return null;
         }
     }
 
-    public function getBookIdFromISBN( $ISBN ) {
+    public function getBookIdFromISBN($ISBN)
+    {
         try {
             $pdoSt = $this->cn->prepare(
                 'SELECT books.id AS bookId
@@ -77,38 +82,41 @@ class Books extends Model {
                   JOIN books_versions ON books_versions.books_id = books.id
                   WHERE books_versions.ISBN = :ISBN'
             );
-            $pdoSt->execute( [ ':ISBN' => $ISBN ] );
+            $pdoSt->execute([':ISBN' => $ISBN]);
             return $pdoSt->fetch();
-        } catch ( \PDOException $exception ) {
+        } catch (\PDOException $exception) {
             return null;
         }
     }
 
-    public function getBookVersions( $book_id ) {
+    public function getBookVersions($book_id)
+    {
         try {
             $pdoSt = $this->cn->prepare(
                 'SELECT * FROM library.books_versions WHERE books_id = :book_id'
             );
-            $pdoSt->execute( [ ':book_id' => $book_id ] );
+            $pdoSt->execute([':book_id' => $book_id]);
             return $pdoSt->fetchAll();
-        } catch ( \PDOException $exception ) {
+        } catch (\PDOException $exception) {
             return null;
         }
     }
 
-    public function getVersion( $ISBN ) {
+    public function getVersion($ISBN)
+    {
         try {
             $pdoSt = $this->cn->prepare(
                 'SELECT * FROM library.books_versions WHERE ISBN = :ISBN'
             );
-            $pdoSt->execute( [ ':ISBN' => $ISBN ] );
+            $pdoSt->execute([':ISBN' => $ISBN]);
             return $pdoSt->fetch();
-        } catch ( \PDOException $exception ) {
+        } catch (\PDOException $exception) {
             return null;
         }
     }
 
-    public function addBook( $book ) {
+    public function addBook($book)
+    {
         try {
             $pdoSt = $this->cn->prepare(
                 'INSERT INTO library.books
@@ -124,12 +132,13 @@ class Books extends Model {
                 ':genres_id' => $book['genres_id']
             ]);
             return $this->cn->lastInsertId();
-        } catch ( \PDOException $exception ) {
+        } catch (\PDOException $exception) {
             return false;
         }
     }
 
-    public function addVersion( $version ) {
+    public function addVersion($version)
+    {
         try {
             $pdoSt = $this->cn->prepare(
                 'INSERT INTO library.books_versions
@@ -147,24 +156,26 @@ class Books extends Model {
                 ':books_id' => $version['books_id']
             ]);
             return true;
-        } catch ( \PDOException $exception ) {
+        } catch (\PDOException $exception) {
             return false;
         }
     }
 
-    public function addCopy( $ISBN ) {
+    public function addCopy($ISBN)
+    {
         try {
             $pdoSt = $this->cn->prepare(
                 'UPDATE books_versions SET copies = copies + 1 WHERE ISBN = :ISBN'
             );
-            $pdoSt->execute( [ ':ISBN' => $ISBN ] );
+            $pdoSt->execute([':ISBN' => $ISBN]);
             return true;
-        } catch ( \PDOException $exception ) {
+        } catch (\PDOException $exception) {
             return false;
         }
     }
 
-    public function editBook( $book ) {
+    public function editBook($book)
+    {
         try {
             $pdoSt = $this->cn->prepare(
                 'UPDATE books SET title = :title, synopsis = :synopsis, tags = :tags, authors_id = :authors_id, series_id = :series_id, genres_id = :genres_id WHERE id = :id'
@@ -179,39 +190,45 @@ class Books extends Model {
                 ':id' => $book['id']
             ]);
             return true;
-        } catch ( \PDOException $exception ) {
+        } catch (\PDOException $exception) {
             return false;
         }
     }
 
-    public function isAValidString( $string ) {
-        if ( is_string( $string ) && preg_match( "#^.+$#", trim( $string ) ) ) {
+    public function isAValidString($string)
+    {
+        if (is_string($string) && preg_match("#^.+$#", trim($string))) {
             return true;
         }
         return false;
     }
 
-    public function isAValidPosInt( $i ) {
-        if ( intval( $i, 10 ) >= 1 ) {
+    public function isAValidPosInt($i)
+    {
+        if (intval($i, 10) >= 1) {
             return true;
         }
         return false;
     }
 
-    public function checkId( $id ) {
-        if ( intval( $id, 10 ) >= 1 ) {
+    public function checkId($id)
+    {
+        if (intval($id, 10) >= 1) {
             return $id;
         }
         return null;
     }
-    public function checkCoverURL( $url ) {
-        if ( preg_match( '#(\.jpg|\.jpeg|\.png)$#', $url ) ) {
+
+    public function checkCoverURL($url)
+    {
+        if (preg_match('#(\.jpg|\.jpeg|\.png)$#', $url)) {
             return $url;
         }
         return null;
     }
 
-    public function findBook( $term ) {
+    public function findBook($term)
+    {
         try {
             $pdoSt = $this->cn->prepare(
                 'SELECT id, title FROM library.books WHERE books.title LIKE :term OR books.tags LIKE :term '
@@ -219,17 +236,18 @@ class Books extends Model {
             $pdoSt->bindValue(':term', "%$term%");
             $pdoSt->execute();
             return $pdoSt->fetchAll();
-        } catch ( \PDOException $exception ) {
+        } catch (\PDOException $exception) {
             return null;
         }
     }
 
-    public function deleteBook( $id ) {
+    public function deleteBook($id)
+    {
         try {
-            $pdoSt = $this->cn->prepare( 'DELETE FROM books WHERE id = :id' );
-            $pdoSt->execute([ ':id' => $id ]);
+            $pdoSt = $this->cn->prepare('DELETE FROM books WHERE id = :id');
+            $pdoSt->execute([':id' => $id]);
             return true;
-        } catch ( \PDOException $exception ) {
+        } catch (\PDOException $exception) {
             return false;
         }
     }

@@ -1,8 +1,10 @@
 <?php
 namespace Models;
 
-class Genres extends Model {
-    public function getGenres( $order = null ) {
+class Genres extends Model
+{
+    public function getGenres($order = null)
+    {
         switch ($order) {
             case "za":
                 $sql = 'SELECT * FROM library.genres ORDER BY name DESC';
@@ -20,14 +22,15 @@ class Genres extends Model {
                 $sql = 'SELECT * FROM library.genres ORDER BY name';
         }
         try {
-            $pdoSt = $this->cn->query( $sql );
+            $pdoSt = $this->cn->query($sql);
             return $pdoSt->fetchAll();
-        } catch ( \PDOException $exception ) {
+        } catch (\PDOException $exception) {
             return null;
         }
     }
 
-    public function addGenre( $name ) {
+    public function addGenre($name)
+    {
         try {
             $pdoSt = $this->cn->prepare(
                 'INSERT INTO library.genres ( name ) VALUES ( :name )'
@@ -36,12 +39,13 @@ class Genres extends Model {
                 ':name' => $name
             ]);
             return true;
-        } catch ( \PDOException $exception ) {
+        } catch (\PDOException $exception) {
             return false;
         }
     }
 
-    public function findGenre( $term ) {
+    public function findGenre($term)
+    {
         try {
             $pdoSt = $this->cn->prepare(
                 'SELECT id, name FROM library.genres WHERE name LIKE :term '
@@ -49,7 +53,7 @@ class Genres extends Model {
             $pdoSt->bindValue(':term', "%$term%");
             $pdoSt->execute();
             return $pdoSt->fetchAll();
-        } catch ( \PDOException $exception ) {
+        } catch (\PDOException $exception) {
             return null;
         }
     }

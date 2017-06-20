@@ -6,16 +6,16 @@ return [
     'logIn' => 'GET/user/logIn',
     'loggedIn' => 'POST/user/loggedIn',
     'loggedOut' => 'GET/user/loggedOut',
-    'block' => 'POST/user/block',
-    'profile' => 'GET/user/profile',
+    /*'block' => 'POST/user/block',
+    'profile' => 'GET/user/profile',*/
 
     /* AUTHORS */
     'authors' => 'GET/authors/list',
     'author' => 'GET/authors/zoom',
     'addAuthor' => 'GET/authors/add',
     'addedAuthor' => 'POST/authors/added',
-    'editAuthor' => 'GET/authors/edit',
-    'editedAuthor' => 'POST/authors/edited',
+    /*'editAuthor' => 'GET/authors/edit',
+    'editedAuthor' => 'POST/authors/edited',*/
 
     /* BOOKS */
     'books' => 'GET/books/list',
@@ -29,11 +29,11 @@ return [
     'editedBook' => 'POST/books/edited',
     'deleteBook' => 'GET/books/delete',
 
-    /* COMMENTS */
+    /* COMMENTS
     'addedComment' => 'POST/comments/added',
     'editComment' => 'GET/comments/edit',
     'editedComment' => 'POST/comments/edited',
-    'moderateComments' => 'GET/comments/moderate',
+    'moderateComments' => 'GET/comments/moderate', */
 
     /* BORROWINGS */
     'borrowings' => 'GET/borrowings/list',

@@ -1,32 +1,36 @@
 <?php
 namespace Models;
 
-class Borrowings extends Model {
-    public function countCopiesBorrowed( $ISBN ) {
+class Borrowings extends Model
+{
+    public function countCopiesBorrowed($ISBN)
+    {
         try {
             $pdoSt = $this->cn->prepare(
                 'SELECT COUNT(*) AS nbBorrowings FROM library.borrowings WHERE books_versions_ISBN = :ISBN AND return_date IS NULL'
             );
-            $pdoSt->execute( [ ':ISBN' => $ISBN ] );
+            $pdoSt->execute([':ISBN' => $ISBN]);
             return $pdoSt->fetch();
-        } catch ( \PDOException $exception ) {
+        } catch (\PDOException $exception) {
             return null;
         }
     }
 
-    public function countBooksBorrowed( $code ) {
+    public function countBooksBorrowed($code)
+    {
         try {
             $pdoSt = $this->cn->prepare(
                 'SELECT COUNT(*) AS nbBorrowings FROM library.borrowings WHERE users_bar_code = :code AND return_date IS NULL'
             );
-            $pdoSt->execute( [ ':code' => $code ] );
+            $pdoSt->execute([':code' => $code]);
             return $pdoSt->fetch();
-        } catch ( \PDOException $exception ) {
+        } catch (\PDOException $exception) {
             return null;
         }
     }
 
-    public function getBooksBorrowed( $code ) {
+    public function getBooksBorrowed($code)
+    {
         try {
             $pdoSt = $this->cn->prepare(
                 'SELECT borrowings.id AS borrowingId, DATE_FORMAT(borrowings.borrowing_date,\'%d/%m/%Y\') AS borrowing_date, DATE_FORMAT(borrowings.deadline_for_return,\'%d/%m/%Y\') AS deadline_for_return, borrowings.books_versions_ISBN AS isbn,
@@ -39,16 +43,17 @@ class Borrowings extends Model {
                   WHERE borrowings.users_bar_code = :code AND borrowings.return_date IS NULL
                   ORDER BY borrowings.borrowing_date'
             );
-            $pdoSt->execute( [ ':code' => $code ] );
+            $pdoSt->execute([':code' => $code]);
             return $pdoSt->fetchAll();
-        } catch ( \PDOException $exception ) {
+        } catch (\PDOException $exception) {
             return null;
         }
     }
 
-    public function addBorrowing( $users_bar_code, $books_versions_ISBN, $borrowing_date = null, $duration = 1 ) {
+    public function addBorrowing($users_bar_code, $books_versions_ISBN, $borrowing_date = null, $duration = 1)
+    {
         try {
-            if( !$borrowing_date ) $borrowing_date = date("Y-m-d");
+            if (!$borrowing_date) $borrowing_date = date("Y-m-d");
             $pdoSt = $this->cn->prepare(
                 'INSERT INTO library.borrowings
                   ( borrowing_date, deadline_for_return, users_bar_code, books_versions_ISBN ) VALUES
@@ -62,7 +67,7 @@ class Borrowings extends Model {
                 ':books_versions_ISBN' => $books_versions_ISBN
             ]);
             return true;
-        } catch ( \PDOException $exception ) {
+        } catch (\PDOException $exception) {
             return false;
         }
     }

@@ -1,22 +1,14 @@
 <?php
 namespace Models;
 
-class Subscriptions extends Model {
+class Subscriptions extends Model
+{
 
 
-    public function getActiveSubscription( $code ) {
+    public function addSubscription($code, $duration)
+    {
         try {
-            $pdoSt = $this->cn->prepare( 'SELECT * FROM library.subscriptions WHERE user_bar_code = :code AND ending_date > NOW() ORDER BY ending_date DESC LIMIT 1' );
-            $pdoSt->execute([ ':code' => $code ]);
-            return $pdoSt->fetch();
-        } catch ( \PDOException $exception ) {
-            return null;
-        }
-    }
-
-    public function addSubscription( $code, $duration ) {
-        try {
-            if ( $lastSub = $this->getActiveSubscription( $code ) ) {
+            if ($lastSub = $this->getActiveSubscription($code)) {
                 $pdoSt = $this->cn->prepare(
                     'INSERT INTO library.subscriptions
                   ( starting_date, ending_date, user_bar_code ) VALUES
@@ -40,8 +32,19 @@ class Subscriptions extends Model {
                 ':user_bar_code' => $code
             ]);
             return true;
-        } catch ( \PDOException $exception ) {
+        } catch (\PDOException $exception) {
             return false;
+        }
+    }
+
+    public function getActiveSubscription($code)
+    {
+        try {
+            $pdoSt = $this->cn->prepare('SELECT * FROM library.subscriptions WHERE user_bar_code = :code AND ending_date > NOW() ORDER BY ending_date DESC LIMIT 1');
+            $pdoSt->execute([':code' => $code]);
+            return $pdoSt->fetch();
+        } catch (\PDOException $exception) {
+            return null;
         }
     }
 }
