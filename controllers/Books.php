@@ -4,18 +4,21 @@ namespace Controllers;
 use Models\Books as ModelBooks;
 use Models\Authors as ModelAuthors;
 use Models\Genres as ModelGenres;
+use Models\Borrowings as ModelBorrowings;
 
 class Books extends Controller
 {
     private $modelBooks = null;
     private $modelAuthors = null;
     private $modelGenres = null;
+    private $modelBorrowings = null;
 
     public function __construct()
     {
         $this->modelBooks = new ModelBooks();
         $this->modelAuthors = new ModelAuthors();
         $this->modelGenres = new ModelGenres();
+        $this->modelBorrowings = new ModelBorrowings();
     }
 
     public function list()
@@ -34,6 +37,13 @@ class Books extends Controller
         }
         $book = $this->modelBooks->getBook( $_GET['id'] );
         $book_versions = $this->modelBooks->getBookVersions( $_GET['id'] );
+        foreach ($book_versions as $version){
+            if ( $version->copies <= $this->modelBorrowings->countCopiesBorrowed( $version->ISBN )->nbBorrowings ) {
+                $version->hasCopiesLeft = false;
+            } else {
+                $version->hasCopiesLeft = true;
+            }
+        }
         return [ 'view' => 'views/book.php',
             'book' => $book,
             'book_versions' => $book_versions];
