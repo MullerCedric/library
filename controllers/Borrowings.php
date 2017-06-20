@@ -47,7 +47,7 @@ class Borrowings extends Controller {
             exit;
         }
         if( !$this->modelSubscriptions->getActiveSubscription( $_SESSION['user']->bar_code ) ) {
-            $_SESSION['error'][] = 'Vous devez être abonné pour pouvoir réserver un livre. Pour vous abonner, merci de vous rendre à la bibliothèque (5€/an)';
+            $_SESSION['error'][] = 'Vous devez être abonné pour pouvoir réserver un livre. Pour vous abonner, merci de vous rendre à la bibliothèque (6€/an)';
         }
         if( $version->copies <= $this->modelBorrowings->countCopiesBorrowed( urldecode( $_GET['isbn'] ) )->nbBorrowings ) {
             $_SESSION['error'][] = 'Désolé mais tous les exemplaires de ce livre ont été réservé. Vérifié si une autre version du livre est disponible ou choisissez un autre livre parmi notre large sélection';

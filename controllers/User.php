@@ -12,10 +12,20 @@ class User extends Controller {
     }
 
     public function signUp() {
+        if ( $this->is_connected() ) {
+            $_SESSION['error'][] = 'Vous êtes déjà inscrit !';
+            header( 'Location: ' . HARDCODED_URL );
+            exit;
+        }
         return ['view' => 'views/signUp.php'];
     }
 
     public function signedUp() {
+        if ( $this->is_connected() ) {
+            $_SESSION['error'][] = 'Vous êtes déjà inscrit !';
+            header( 'Location: ' . HARDCODED_URL );
+            exit;
+        }
         if( !isset( $_POST['bar_code'] ) || !preg_match( "#^[0-9]{6}$#", trim( $_POST['bar_code'] ) ) ) {
             $_SESSION['error'][] = 'Le code barre fourni est incorrect. Merci de l\'écrire sous le format : <span class="format">000000</span>';
         }
@@ -65,10 +75,20 @@ class User extends Controller {
     }
 
     public function logIn() {
+        if ( $this->is_connected() ) {
+            $_SESSION['error'][] = 'Vous êtes déjà connecté !';
+            header( 'Location: ' . HARDCODED_URL );
+            exit;
+        }
         return ['view' => 'views/logIn.php'];
     }
 
     public function loggedIn() {
+        if ( $this->is_connected() ) {
+            $_SESSION['error'][] = 'Vous êtes déjà connecté !';
+            header( 'Location: ' . HARDCODED_URL );
+            exit;
+        }
         if( !isset( $_POST['code'] ) || !preg_match( "#^[0-9]{6}$#", trim( $_POST['code'] ) ) ) {
             $_SESSION['error'][] = 'Le code barre fourni est incorrect. Merci de l\'écrire sous le format : <span class="format">000000</span>';
         }
