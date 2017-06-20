@@ -15,9 +15,6 @@
                 <li>
                     <a href="index.php?r=books&a=addVersion">Ajouter une version/édition d'un livre</a>
                 </li>
-                <li>
-                    <a href="index.php?r=books&a=edit">Éditer un livre</a>
-                </li>
             </ul>
         </li>
         <li>
@@ -28,9 +25,6 @@
                 </li>
                 <li>
                     <a href="index.php?r=authors&a=add">Ajouter un auteur</a>
-                </li>
-                <li>
-                    <a href="index.php?r=authors&a=edit">Éditer un auteur</a>
                 </li>
             </ul>
         </li>
@@ -44,6 +38,9 @@
                     <a href="index.php?r=genres&a=add">Ajouter un genre</a>
                 </li>
             </ul>
+        </li>
+        <li>
+            <a href="index.php?r=subscriptions&a=add">Abonner un membre</a>
         </li>
         <li>
             <a href="index.php?r=borrowings&a=list">Liste de vos emprunts</a>

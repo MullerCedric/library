@@ -222,11 +222,61 @@ class Books extends Controller
 
     public function edit()
     {
+        if (!isset($_SESSION['user']) || !$_SESSION['user']->is_admin) {
+            header('Location: ' . HARDCODED_URL);
+            exit;
+        }
 
+        if ( isset( $_GET['id'] ) && intval( $_GET['id'], 10) < 1 ) {
+            $_SESSION['error'][] = 'Paramètre invalide';
+            header( 'Location: ' . HARDCODED_URL . 'index.php?r=books&a=list' );
+            exit;
+        }
+        $book = $this->modelBooks->getBook( $_GET['id'] );
+        $book_versions = $this->modelBooks->getBookVersions( $_GET['id'] );
+        return [ 'view' => 'views/editBook.php',
+            'book' => $book,
+            'book_versions' => $book_versions,
+            'authorsList' => $this->modelAuthors->getAuthors(),
+            'genresList' => $this->modelGenres->getGenres()];
     }
 
     public function edited()
     {
+        if (!isset($_SESSION['user']) || !$_SESSION['user']->is_admin) {
+            header('Location: ' . HARDCODED_URL);
+            exit;
+        }
 
+        if (!$this->modelBooks->isAValidString($_POST['title']) OR
+            !$this->modelBooks->isAValidPosInt($_POST['authors_id']) OR
+            !$this->modelBooks->isAValidPosInt($_POST['genres_id']) OR
+            !$this->modelBooks->isAValidPosInt($_POST['id'])
+        ) {
+            $_SESSION['error'][] = 'L\'un ou plusieurs des paramètres fourni(s) est/sont incorrect(s). Le livre n\'a pas été édité !';
+            header('Location: ' . HARDCODED_URL . 'index.php?r=books&a=list');
+            exit;
+        }
+
+        $synopsis = $_POST['synopsis'] ? trim($_POST['synopsis']) : null;
+        $tags = $_POST['tags'] ? trim($_POST['tags']) : null;
+        $series_id = $_POST['series_id'] ? $this->modelBooks->checkId($_POST['series_id']) : null;
+
+        if ( $books_id = $this->modelBooks->editBook([
+            'title' => trim($_POST['title']),
+            'synopsis' => $synopsis,
+            'tags' => $tags,
+            'authors_id' => $_POST['authors_id'],
+            'series_id' => $series_id,
+            'genres_id' => $_POST['genres_id'],
+            'id' => $_POST['id']
+        ]) ) {
+            $_SESSION['success'][] = 'Le livre a été édité';
+            header( 'Location: ' . HARDCODED_URL . 'index.php?r=books&a=zoom&id=' . $_POST['id'] );
+            exit;
+        }else{
+            $_SESSION['error'][] = 'La connexion à la BDD n\'a pu être établie. Le livre n\'a pas été édité !';header( 'Location: ' .                    HARDCODED_URL . 'index.php?r=books&a=zoom&id=' . $_POST['id'] );
+            exit;
+        }
     }
 }

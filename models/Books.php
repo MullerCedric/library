@@ -138,6 +138,26 @@ class Books extends Model {
         }
     }
 
+    public function editBook( $book ) {
+        try {
+            $pdoSt = $this->cn->prepare(
+                'UPDATE books SET title = :title, synopsis = :synopsis, tags = :tags, authors_id = :authors_id, series_id = :series_id, genres_id = :genres_id WHERE id = :id'
+            );
+            $pdoSt->execute([
+                ':title' => $book['title'],
+                ':synopsis' => $book['synopsis'],
+                ':tags' => $book['tags'],
+                ':authors_id' => $book['authors_id'],
+                ':series_id' => $book['series_id'],
+                ':genres_id' => $book['genres_id'],
+                ':id' => $book['id']
+            ]);
+            return true;
+        } catch ( \PDOException $exception ) {
+            return false;
+        }
+    }
+
     public function isAValidString( $string ) {
         if ( is_string( $string ) && preg_match( "#^.+$#", trim( $string ) ) ) {
             return true;
