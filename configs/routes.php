@@ -27,6 +27,7 @@ return [
     'addedCopy' => 'GET/books/addedCopy',
     'editBook' => 'GET/books/edit',
     'editedBook' => 'POST/books/edited',
+    'deleteBook' => 'GET/books/delete',
 
     /* COMMENTS */
     'addedComment' => 'POST/comments/added',

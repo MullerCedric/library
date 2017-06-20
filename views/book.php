@@ -43,6 +43,7 @@ if ( $data['book'] === null OR empty( $data['book'] ) ) : ?>
         if( isset($_SESSION['user']) && $_SESSION['user']->is_admin ) {
             echo ' <a href="index.php?r=books&a=addVersion&id='. $data['book']->id .'">Ajouter une version à ce livre</a>';
             echo ' <a href="index.php?r=books&a=edit&id='. $data['book']->id .'">Éditer ce livre</a>';
+            echo ' <a href="index.php?r=books&a=delete&id='. $data['book']->id .'">SUPPRIMER ce livre</a>';
         }?>
     </div>
 <?php endif; ?>

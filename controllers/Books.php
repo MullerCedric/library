@@ -232,7 +232,7 @@ class Books extends Controller
             exit;
         }
 
-        if ( isset( $_GET['id'] ) && intval( $_GET['id'], 10) < 1 ) {
+        if ( !isset( $_GET['id'] ) || intval( $_GET['id'], 10) < 1 ) {
             $_SESSION['error'][] = 'Paramètre invalide';
             header( 'Location: ' . HARDCODED_URL . 'index.php?r=books&a=list' );
             exit;
@@ -280,8 +280,32 @@ class Books extends Controller
             header( 'Location: ' . HARDCODED_URL . 'index.php?r=books&a=zoom&id=' . $_POST['id'] );
             exit;
         }else{
-            $_SESSION['error'][] = 'La connexion à la BDD n\'a pu être établie. Le livre n\'a pas été édité !';header( 'Location: ' .                    HARDCODED_URL . 'index.php?r=books&a=zoom&id=' . $_POST['id'] );
+            $_SESSION['error'][] = 'La connexion à la BDD n\'a pu être établie. Le livre n\'a pas été édité !';
+            header( 'Location: ' . HARDCODED_URL . 'index.php?r=books&a=zoom&id=' . $_POST['id'] );
             exit;
         }
+    }
+
+    public function delete() {
+        if (!isset($_SESSION['user']) || !$_SESSION['user']->is_admin) {
+            header('Location: ' . HARDCODED_URL);
+            exit;
+        }
+        if ( !isset( $_GET['id'] ) || intval( $_GET['id'], 10) < 1 ) {
+            $_SESSION['error'][] = 'Paramètre invalide';
+            header( 'Location: ' . HARDCODED_URL . 'index.php?r=books&a=list' );
+            exit;
+        }
+        if ( $this->modelBooks->getBook( $_GET['id'] ) ) {
+            if ( $this->modelBooks->deleteBook( $_GET['id'] ) ) {
+                $_SESSION['success'][] = 'Le livre a correctement été supprimé';
+            } else {
+                $_SESSION['error'][] = 'La connexion à la BDD n\'a pu être établie . Le livre n\'a pas été supprimé !';
+            }
+        } else {
+            $_SESSION['error'][] = 'Aucun livre ne correspond à votre recherche';
+        }
+        header( 'Location: ' . HARDCODED_URL . 'index.php?r=books&a=list' );
+        exit;
     }
 }

@@ -223,4 +223,14 @@ class Books extends Model {
             return null;
         }
     }
+
+    public function deleteBook( $id ) {
+        try {
+            $pdoSt = $this->cn->prepare( 'DELETE FROM books WHERE id = :id' );
+            $pdoSt->execute([ ':id' => $id ]);
+            return true;
+        } catch ( \PDOException $exception ) {
+            return false;
+        }
+    }
 }
