@@ -7,6 +7,14 @@
 PROJET SCOLAIRE | Gestion d'une bibliothèque via un site internet. Ce site se veut avant-tout simple d'utilisation. Il permet d'aller chercher diverses informations, mais aussi de réserver directement un livre, prolonger une réservation, etc. Pour plus d'information concernant les possibilités, veuillez vous référer à la liste ci-dessous.
 
 * * *
+## Information importante
+
+Ce README n'est plus à jour. En effet, certaines fonctionnalités ont été abandonnées par manque de temps.
+
+Regarder les routes permet de se donner un aperçu rapide des fonctionnalités disponibles
+
+Merci de votre compréhension !
+* * *
 
 ## Fonctionnalités du site 
 
