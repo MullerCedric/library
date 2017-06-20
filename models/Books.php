@@ -43,6 +43,21 @@ class Books extends Model {
         }
     }
 
+    public function getBookIdFromISBN( $ISBN ) {
+        try {
+            $pdoSt = $this->cn->prepare(
+                'SELECT books.id AS bookId
+                  FROM books
+                  JOIN books_versions ON books_versions.books_id = books.id
+                  WHERE books_versions.ISBN = :ISBN'
+            );
+            $pdoSt->execute( [ ':ISBN' => $ISBN ] );
+            return $pdoSt->fetch();
+        } catch ( \PDOException $exception ) {
+            return null;
+        }
+    }
+
     public function getBookVersions( $book_id ) {
         try {
             $pdoSt = $this->cn->prepare(

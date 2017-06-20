@@ -34,7 +34,7 @@ class Borrowings extends Controller {
         }
         if( !$this->is_connected() ) {
             $_SESSION['error'][] = 'Vous devez être connecté pour pouvoir réserver un livre';
-            header( 'Location: ' . HARDCODED_URL . 'index.php?r=books&a=list' );
+            header( 'Location: ' . HARDCODED_URL . 'index.php?r=books&a=zoom&isbn=' . $_GET['isbn'] );
             exit;
         }
         if( !$this->modelSubscriptions->getActiveSubscription( $_SESSION['user']->bar_code ) ) {
@@ -51,7 +51,7 @@ class Borrowings extends Controller {
         } else {
             $_SESSION['error'][] = 'La connexion à la BDD n\'a pu être établie. Le livre n\'a pas été réservé !';
         }
-        header( 'Location: ' . HARDCODED_URL . 'index.php?r=books&a=list' );
+        header( 'Location: ' . HARDCODED_URL . 'index.php?r=books&a=zoom&isbn=' . $_GET['isbn'] );
         exit;
     }
 }

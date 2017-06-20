@@ -30,13 +30,35 @@ class Books extends Controller
 
     public function zoom()
     {
-        if( !isset( $_GET['id'] ) OR intval( $_GET['id'], 10) < 1 ) {
-            $_SESSION['error'][] = 'Paramètre invalide';
+        $id = 1;
+        if( isset( $_GET['id'] ) || isset( $_GET['isbn'] ) ) {
+
+            if ( isset( $_GET['id'] ) ) {
+                if ( intval( $_GET['id'], 10) < 1 ) {
+                    $_SESSION['error'][] = 'Paramètre invalide';
+                    header( 'Location: ' . HARDCODED_URL . 'index.php?r=books&a=list' );
+                    exit;
+                }
+                $id = $_GET['id'];
+            }
+            if ( isset( $_GET['isbn'] )) {
+                if( strlen( $_GET['isbn'] ) < 10 ) {
+                    $_SESSION['error'][] = 'Paramètre invalide';
+                    header( 'Location: ' . HARDCODED_URL . 'index.php?r=books&a=list' );
+                    exit;
+                }
+                if ( ! $id = $this->modelBooks->getBookIdFromISBN( urldecode( $_GET['isbn'] ) )->bookId ) {
+                    $_SESSION['error'][] = 'Aucun livre ne correspond à cet ISBN';
+                    header( 'Location: ' . HARDCODED_URL . 'index.php?r=books&a=list' );
+                    exit;
+                }
+            }
+        } else {
             header( 'Location: ' . HARDCODED_URL . 'index.php?r=books&a=list' );
             exit;
         }
-        $book = $this->modelBooks->getBook( $_GET['id'] );
-        $book_versions = $this->modelBooks->getBookVersions( $_GET['id'] );
+        $book = $this->modelBooks->getBook( $id );
+        $book_versions = $this->modelBooks->getBookVersions( $id );
         foreach ($book_versions as $version){
             if ( $version->copies <= $this->modelBorrowings->countCopiesBorrowed( $version->ISBN )->nbBorrowings ) {
                 $version->hasCopiesLeft = false;
