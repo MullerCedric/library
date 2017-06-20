@@ -5,7 +5,7 @@ class Borrowings extends Model {
     public function countCopiesBorrowed( $ISBN ) {
         try {
             $pdoSt = $this->cn->prepare(
-                'SELECT COUNT(*) AS nbBorrowings FROM library.borrowings WHERE books_versions_ISBN = :ISBN'
+                'SELECT COUNT(*) AS nbBorrowings FROM library.borrowings WHERE books_versions_ISBN = :ISBN AND return_date IS NULL'
             );
             $pdoSt->execute( [ ':ISBN' => $ISBN ] );
             return $pdoSt->fetch();

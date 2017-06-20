@@ -30,10 +30,14 @@ if ( $data['book'] === null OR empty( $data['book'] ) ) : ?>
             foreach ($data['book_versions'] as $version){
                 echo '<li>' . $version->publication;
                 if( $version->hasCopiesLeft ) {
-                    echo ' <a href="index.php?r=borrowings&a=added&isbn='. urlencode($version->ISBN) .'">Réserver cette version</a></li>' ;
+                    echo ' <a href="index.php?r=borrowings&a=added&isbn='. urlencode($version->ISBN) .'">Réserver cette version</a>' ;
                 } else {
-                    echo ' Tous les exemplaires de cette version sont actuellement réservés</li>';
+                    echo ' Tous les exemplaires de cette version sont actuellement réservés';
                 }
+                if( isset($_SESSION['user']) && $_SESSION['user']->is_admin ) {
+                    echo ' <a href="index.php?r=books&a=addedCopy&isbn='. urlencode($version->ISBN) .'">Ajouter une copie de cette version</a>';
+                }
+                echo '</li>';
             }?>
         </ul>
     </div>

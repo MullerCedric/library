@@ -112,6 +112,18 @@ class Books extends Model {
         }
     }
 
+    public function addCopy( $ISBN ) {
+        try {
+            $pdoSt = $this->cn->prepare(
+                'UPDATE books_versions SET copies = copies + 1 WHERE ISBN = :ISBN'
+            );
+            $pdoSt->execute( [ ':ISBN' => $ISBN ] );
+            return true;
+        } catch ( \PDOException $exception ) {
+            return false;
+        }
+    }
+
     public function isAValidString( $string ) {
         if ( is_string( $string ) && preg_match( "#^.+$#", trim( $string ) ) ) {
             return true;

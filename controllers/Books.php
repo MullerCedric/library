@@ -148,6 +148,31 @@ class Books extends Controller
         exit;
     }
 
+    public function addedCopy()
+    {
+        if (!isset($_SESSION['user']) || !$_SESSION['user']->is_admin) {
+            header('Location: ' . HARDCODED_URL . 'index.php?r=books&a=list');
+            exit;
+        }
+        if( !isset($_GET['isbn']) ) {
+            $_SESSION['error'][] = 'Paramètre invalide';
+            header( 'Location: ' . HARDCODED_URL . 'index.php?r=books&a=list' );
+            exit;
+        }
+        if( ! $version = $this->modelBooks->getVersion( urldecode( $_GET['isbn'] ) ) ) {
+            $_SESSION['error'][] = 'Le livre demandé n\'a pas été trouvé';
+            header( 'Location: ' . HARDCODED_URL . 'index.php?r=books&a=list' );
+            exit;
+        }
+        if( !$_SESSION['error'] && $this->modelBooks->addCopy( urldecode( $_GET['isbn'] ) ) ) {
+            $_SESSION['success'][] = 'Une copie a bien été ajoutée';
+        } else {
+            $_SESSION['error'][] = 'La connexion à la BDD n\'a pu être établie. La copie n\'a pas été ajoutée !';
+        }
+        header( 'Location: ' . HARDCODED_URL . 'index.php?r=books&a=list' );
+        exit;
+    }
+
     public function edit()
     {
 
