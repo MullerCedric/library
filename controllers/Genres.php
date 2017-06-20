@@ -12,7 +12,8 @@ class Genres extends Controller {
     }
 
     public function list() {
-        $genres = $this->modelGenres->getGenres();
+        $order = $_GET['order'] ?? null;
+        $genres = $this->modelGenres->getGenres( $order );
         return ['view' => 'views/genres.php',
         'genresList' => $genres ];
     }

@@ -22,6 +22,8 @@ class Search extends Controller {
             header( 'Location: ' . HARDCODED_URL );
             exit;
         }
+        $found = null;
+        $type = null;
         switch ( $_GET['type'] ) {
             case "author":
                 if ( $found = $this->modelAuthors->findAuthor( $_GET['q'] ) ) {
@@ -38,8 +40,6 @@ class Search extends Controller {
                     $type = $_GET['type'];
                 }
                 break;
-            default:
-                $found = null;
         }
 
         return [ 'view' => 'views/find.php',

@@ -23,7 +23,12 @@ class Books extends Controller
 
     public function list()
     {
-        $books = $this->modelBooks->getBooks();
+        $order = $_GET['order'] ?? null;
+        if ( isset( $_GET['filter'] ) && intval( $_GET['filter'], 10 ) > 0 ) {
+            $books = $this->modelBooks->getBooks( $order, $_GET['filter'] );
+        } else {
+            $books = $this->modelBooks->getBooks( $order );
+        }
         return ['view' => 'views/books.php',
             'booksList' => $books];
     }

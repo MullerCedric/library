@@ -16,7 +16,7 @@ if ( $data['found'] === null ) {
                 break;
             case "genre":
                 foreach ($data['found'] as $genre){
-                    echo '<li><a href="index.php?r=books&a=list&filter=genre&id='. $genre->id .'">' . $genre->name . '</a></li>' ;
+                    echo '<li><a href="index.php?r=books&a=list&filter='. $genre->id .'">' . $genre->name . '</a></li>' ;
                 }
         } ?>
     </ul><?php

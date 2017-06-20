@@ -2,11 +2,37 @@
 namespace Models;
 
 class Books extends Model {
-    public function getBooks() {
+    public function getBooks( $order = null, $filter = null ) {
+        if ( $filter ) {
+            $sql = 'SELECT books.id, title FROM library.books
+                    JOIN genres ON books.genres_id = genres.id
+                    WHERE genres_id = ' . $filter;
+        } else {
+            switch ($order) {
+                case "last":
+                    $sql = 'SELECT id, title FROM library.books ORDER BY id DESC';
+                    break;
+                case "za":
+                    $sql = 'SELECT id, title FROM library.books ORDER BY title DESC';
+                    break;
+                case "genre":
+                    $sql = 'SELECT id, title FROM library.books ORDER BY genres_id';
+                    break;
+                case "top":
+                    $sql = 'SELECT COUNT( borrowings.id ) AS reservations,
+                        books.id, books.title
+                        FROM borrowings
+                        JOIN books_versions ON borrowings.books_versions_ISBN = books_versions.ISBN
+                        JOIN books ON books_versions.books_id = books.id
+                        GROUP BY books.id ORDER BY reservations DESC ';
+                    break;
+                default:
+                    $sql = 'SELECT id, title FROM library.books ORDER BY title';
+            }
+        }
+
         try {
-            $pdoSt = $this->cn->query(
-                'SELECT id, title FROM library.books'
-            );
+            $pdoSt = $this->cn->query( $sql );
             return $pdoSt->fetchAll();
         } catch ( \PDOException $exception ) {
             return null;
