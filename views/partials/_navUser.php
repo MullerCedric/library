@@ -1,5 +1,5 @@
 <nav>
-    <ul>
+    <ul class="wide">
         <li>
             <a href="index.php">Index</a>
         </li>

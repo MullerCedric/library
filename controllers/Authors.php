@@ -14,6 +14,7 @@ class Authors extends Controller {
     public function list() {
         $authors = $this->modelAuthors->getAuthors();
         return ['view' => 'views/authors.php',
+            'title' => 'Liste des auteurs',
             'authorsList' => $authors ];
     }
 
@@ -26,6 +27,7 @@ class Authors extends Controller {
         $author = $this->modelAuthors->getAuthor( $_GET['id'] );
         $books = $this->modelBooks->getBooksFromAuthor( $_GET['id'] );
         return [ 'view' => 'views/author.php',
+            'title' => 'Zoom sur un auteur',
             'author' => $author,
             'books' => $books];
     }
@@ -35,7 +37,8 @@ class Authors extends Controller {
             header( 'Location: ' . HARDCODED_URL );
             exit;
         }
-        return ['view' => 'views/addAuthor.php'];
+        return ['view' => 'views/addAuthor.php',
+            'title' => 'Ajouter un auteur'];
     }
 
     public function added() {

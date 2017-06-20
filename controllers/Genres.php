@@ -15,6 +15,7 @@ class Genres extends Controller {
         $order = $_GET['order'] ?? null;
         $genres = $this->modelGenres->getGenres( $order );
         return ['view' => 'views/genres.php',
+            'title' => 'Liste des genres',
         'genresList' => $genres ];
     }
 
@@ -23,7 +24,8 @@ class Genres extends Controller {
             header( 'Location: ' . HARDCODED_URL );
             exit;
         }
-        return ['view' => 'views/addGenre.php'];
+        return ['view' => 'views/addGenre.php',
+            'title' => 'Ajouter un genre'];
     }
 
     public function added() {

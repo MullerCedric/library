@@ -2,16 +2,17 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title><?php //<?= $data['title'] ?> - Bibliothèque des Chiroux</title>
-<!--    <link rel="stylesheet" href="./views/css/screen.css">-->
+    <title><?= $data['title']; ?> - Bibliothèque des Chiroux</title>
+    <link rel="stylesheet" href="./assets/css/screen.css">
 </head>
-<body><?php
-require 'partials/_header.php';
-
-require $data['view']; ?>
+<body>
+<?php require 'partials/_header.php'; ?>
+<main>
+    <?php require $data['view']; ?>
+</main>
 
 <footer>
-    <p>Made by Cédric Müller in 2017</p>
+    <?php require 'partials/_footer.php'; ?>
 </footer>
 </body>
 </html>

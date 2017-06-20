@@ -6,8 +6,6 @@
             require '_navUser.php';
         } else {
             require '_navBase.php';
-        }
-
-    require '_search.php'; ?>
+        } ?>
 </header>
 <?php require '_displayFeedbacks.php';

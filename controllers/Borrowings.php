@@ -27,6 +27,7 @@ class Borrowings extends Controller {
             $borrowings = null;
         }
         return ['view' => 'views/borrowings.php',
+            'title' => 'Liste des emprunts',
             'borrowings' => $borrowings ];
     }
 

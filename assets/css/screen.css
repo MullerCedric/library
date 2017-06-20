@@ -1,0 +1,136 @@
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, menu, nav, section {
+    display: block;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+body {
+    line-height: 1;
+}
+html, html * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+body {
+    width: 100%;
+    margin: 0 auto;
+    font-family: Helvetica, arial, sans-serif;
+    text-align: center;
+}
+main {
+    padding: 1em;
+    max-width: 1024px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+h1, h2, h3 {
+    margin : 0.5em 0 0.3em 0;
+}
+h1 {
+    font-size: 1.75em;
+}
+
+p {
+    margin-bottom: 1em;
+}
+
+a, a:hover, a:active, a:visited {
+    color: darkblue;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(58, 112, 166, 0.3);
+}
+a:hover {
+    border-bottom: 1px solid rgba(58, 112, 166, 1);
+}
+a.button {
+    display: inline-block;
+    border: 1px solid rgba(58, 112, 166, 0.3);
+    border-radius: 0.3em;
+    padding: 0.5em;
+    margin: 0.25em 0.5em;
+    background-color: #ebf9ff;
+    opacity: 0.8;
+}
+a.button:hover {
+    opacity: 1;
+    transition: 0.2s ease-out;
+}
+
+form {
+    max-width: 700px;
+    padding: 2em;
+    margin: 0 auto;
+ }
+fieldset {
+    border: 2px solid threedface;
+    padding: 1em;
+    margin-bottom: 1.25em;
+}
+label {
+    display: block;
+}
+input, select, textarea {
+    display: block;
+    width: 100%;
+    padding: 0.5em;
+    margin: 1em 0 2em 0;
+}
+textarea {
+    min-height: 100px;
+}
+
+ul {
+    margin-bottom: 1em;
+}
+ul li {
+    list-style: none;
+    padding: 0.5em;
+}
+ul.wide > li {
+    display: inline-block;
+    margin: 0.25em 0.5em;
+}
+
+.search {
+    max-width: none;
+    width: 100%;
+}
+.search input, .search select, .search label {
+    display: inline-block;
+    width: auto;
+}
+.search input, .search select {
+    margin: 0 2em 0 0;
+}
+
+footer {
+    margin-top: 2em;
+    padding: 1em;
+    background-color: rgba(58, 112, 166, 1);
+    color: white;
+    font-size: 0.75em;
+}
+
+.error, .warning, .success {
+    margin: 2em auto;
+    padding: 1em;
+    max-width: 550px;
+    border: 1px solid rgba(255, 0, 0, 0.9);
+    background-color: rgba(255, 0, 0, 0.1);
+}
+.warning {
+    border: 1px solid rgba(255, 175, 0, 0.9);
+    background-color: rgba(255, 175, 0, 0.1);
+}
+.success {
+    border: 1px solid rgba(50, 175, 50, 0.9);
+    background-color: rgba(50, 175, 50, 0.1);
+}

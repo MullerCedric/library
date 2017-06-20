@@ -30,6 +30,7 @@ class Books extends Controller
             $books = $this->modelBooks->getBooks( $order );
         }
         return ['view' => 'views/books.php',
+            'title' => 'Liste des livres',
             'booksList' => $books];
     }
 
@@ -71,6 +72,7 @@ class Books extends Controller
             }
         }
         return [ 'view' => 'views/book.php',
+            'title' => 'Zoom sur un livre',
             'book' => $book,
             'book_versions' => $book_versions];
     }
@@ -83,6 +85,7 @@ class Books extends Controller
         }
 
         return ['view' => 'views/addBook.php',
+            'title' => 'Ajouter un livre',
             'authorsList' => $this->modelAuthors->getAuthors(),
             'genresList' => $this->modelGenres->getGenres()];
     }
@@ -138,6 +141,7 @@ class Books extends Controller
             }
         }
         return ['view' => 'views/addVersion.php',
+            'title' => 'Ajouter une version à un livre',
             'booksList' => $books];
     }
 
@@ -240,6 +244,7 @@ class Books extends Controller
         $book = $this->modelBooks->getBook( $_GET['id'] );
         $book_versions = $this->modelBooks->getBookVersions( $_GET['id'] );
         return [ 'view' => 'views/editBook.php',
+            'title' => 'Éditer un livre',
             'book' => $book,
             'book_versions' => $book_versions,
             'authorsList' => $this->modelAuthors->getAuthors(),

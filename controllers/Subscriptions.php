@@ -23,6 +23,7 @@ class Subscriptions extends Controller {
             $bar_code = '';
         }
         return ['view' => 'views/addSubscription.php',
+            'title' => 'Ajouter/prolonger un abonnement',
             'bar_code' => $bar_code];
     }
 

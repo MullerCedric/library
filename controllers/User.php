@@ -22,6 +22,7 @@ class User extends Controller {
             $newBarCode = random_int( 100000, 999999 );
         }
         return ['view' => 'views/signUp.php',
+            'title' => 'S\'inscrire',
             'newBarCode' => $newBarCode];
     }
 
@@ -85,7 +86,8 @@ class User extends Controller {
             header( 'Location: ' . HARDCODED_URL );
             exit;
         }
-        return ['view' => 'views/logIn.php'];
+        return ['view' => 'views/logIn.php',
+            'title' => 'Se connecter'];
     }
 
     public function loggedIn() {

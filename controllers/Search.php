@@ -43,6 +43,7 @@ class Search extends Controller {
         }
 
         return [ 'view' => 'views/find.php',
+            'title' => 'Recherche',
             'found' => $found,
             'type' => $type ];
     }
